@@ -146,10 +146,7 @@ const Pronouncle = () => {
         {!hasPlayed ? (
           <button
             className={`btn btn-primary ${isRecording ? 'animate-pulse' : ''}`}
-            onMouseDown={startRecording}
-            onMouseUp={stopRecording}
-            onTouchStart={startRecording}
-            onTouchEnd={stopRecording}
+            onClick={toggleRecording}
             onContextMenu={(e) => e.preventDefault()}
             style={{
               width: '120px',
@@ -159,7 +156,8 @@ const Pronouncle = () => {
               touchAction: 'none',
               userSelect: 'none',
               WebkitUserSelect: 'none',
-              WebkitTouchCallout: 'none'
+              WebkitTouchCallout: 'none',
+              backgroundColor: isRecording ? '#fca5a5' : '#ff85a2'
             }}
           >
             <Mic size={40} />
@@ -205,7 +203,7 @@ const Pronouncle = () => {
         )}
 
         <p style={{ fontSize: '0.8rem', color: 'var(--text-muted)', height: '1.2rem', fontWeight: '600' }}>
-          {isRecording ? "Tap to stop" : !hasPlayed ? "Tap to record" : "Next word in 12 hours"}
+          {isRecording ? "Listening... (Tap to finish)" : !hasPlayed ? "Tap button to start recording" : "Next word in 12 hours"}
         </p>
       </div>
 

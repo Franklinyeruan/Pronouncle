@@ -4,10 +4,35 @@ export const MEDICAL_TERMS = [
     phonetic: "lim-FAN-jee-oh-LY-oh-MY-oh-muh-TOH-sis",
     definition: "A rare, progressive lung disease that primarily affects women of childbearing age.",
     difficulty: "hard"
+  },
+  {
+    term: "Sphygmomanometer",
+    phonetic: "sfig-moh-muh-NOM-i-ter",
+    definition: "An instrument for measuring blood pressure, typically consisting of an inflatable rubber cuff.",
+    difficulty: "medium"
+  },
+  {
+    term: "Otorhinolaryngology",
+    phonetic: "oh-toh-ry-noh-lar-ing-GOL-uh-jee",
+    definition: "The study of diseases of the ear, nose, and throat.",
+    difficulty: "hard"
+  },
+  {
+    term: "Choledocholithiasis",
+    phonetic: "koh-led-uh-koh-li-THY-uh-sis",
+    definition: "The presence of at least one gallstone in the common bile duct.",
+    difficulty: "hard"
+  },
+  {
+    term: "Thyroparathyroidectomy",
+    phonetic: "thy-roh-par-uh-thy-roy-dek-tuh-mee",
+    definition: "Surgical removal of the thyroid and parathyroid glands.",
+    difficulty: "expert"
   }
 ];
 
 export const getDailyWord = () => {
-  // Always returns the only word in the list for now
-  return MEDICAL_TERMS[0];
+  const today = new Date();
+  const index = (today.getUTCFullYear() * 366 + today.getUTCMonth() * 31 + today.getUTCDate()) % MEDICAL_TERMS.length;
+  return MEDICAL_TERMS[index];
 };
