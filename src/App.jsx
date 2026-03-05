@@ -53,64 +53,62 @@ const Pronouncle = () => {
     }
   };
 
-  const startRecording = (e) => {
+  const toggleRecording = (e) => {
     if (e) e.preventDefault();
     if (hasPlayed) return;
 
-    setTranscription('');
-
-    // Create new instance every time to avoid InvalidStateError and ensure fresh state
-    const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
-    if (!SpeechRecognition) {
-      alert("Speech recognition is not supported in this browser.");
-      return;
-    }
-
-    const recognition = new SpeechRecognition();
-    recognition.continuous = false;
-    recognition.interimResults = false;
-    recognitionRef.current = recognition;
-
-    recognition.onstart = () => {
-      setIsRecording(true);
-    };
-
-    recognition.onresult = (event) => {
-      const result = event.results[0][0].transcript;
-      setTranscription(result);
-      const finalScore = calculateScore(word.term, result);
-      handleGameEnd(finalScore);
-    };
-
-    recognition.onerror = (event) => {
-      console.error('Speech recognition error', event.error);
-      setIsRecording(false);
-      if (event.error === 'not-allowed') {
-        alert("Please allow microphone access to play!");
+    if (isRecording) {
+      if (recognitionRef.current) {
+        try {
+          recognitionRef.current.stop();
+        } catch (err) {
+          console.error("Error stopping recognition", err);
+        }
       }
-    };
-
-    recognition.onend = () => {
       setIsRecording(false);
-    };
+    } else {
+      setTranscription('');
 
-    try {
-      recognition.start();
-    } catch (err) {
-      console.error("Error starting speech recognition", err);
-    }
-  };
+      const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
+      if (!SpeechRecognition) {
+        alert("Speech recognition is not supported in this browser.");
+        return;
+      }
 
-  const stopRecording = (e) => {
-    if (e) e.preventDefault();
-    if (recognitionRef.current) {
+      const recognition = new SpeechRecognition();
+      recognition.continuous = false;
+      recognition.interimResults = false;
+      recognitionRef.current = recognition;
+
+      recognition.onstart = () => {
+        setIsRecording(true);
+      };
+
+      recognition.onresult = (event) => {
+        const result = event.results[0][0].transcript;
+        setTranscription(result);
+        const finalScore = calculateScore(word.term, result);
+        handleGameEnd(finalScore);
+      };
+
+      recognition.onerror = (event) => {
+        console.error('Speech recognition error', event.error);
+        setIsRecording(false);
+        if (event.error === 'not-allowed') {
+          alert("Please allow microphone access to play!");
+        }
+      };
+
+      recognition.onend = () => {
+        setIsRecording(false);
+      };
+
       try {
-        recognitionRef.current.stop();
+        recognition.start();
       } catch (err) {
-        console.error("Error stopping recognition", err);
+        console.error("Error starting speech recognition", err);
       }
     }
-    setIsRecording(false);
   };
 
   const shareScore = () => {
