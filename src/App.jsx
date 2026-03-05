@@ -27,28 +27,9 @@ const Pronouncle = () => {
       setHasPlayed(true);
     }
 
-    // Initialize Speech Recognition
-    if ('webkitSpeechRecognition' in window || 'SpeechRecognition' in window) {
-      const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
-      recognitionRef.current = new SpeechRecognition();
-      recognitionRef.current.continuous = false;
-      recognitionRef.current.interimResults = false;
-
-      recognitionRef.current.onresult = (event) => {
-        const result = event.results[0][0].transcript;
-        setTranscription(result);
-        const finalScore = calculateScore(dailyWord.term, result);
-        handleGameEnd(finalScore);
-      };
-
-      recognitionRef.current.onerror = (event) => {
-        console.error('Speech recognition error', event.error);
-        setIsRecording(false);
-      };
-
-      recognitionRef.current.onend = () => {
-        setIsRecording(false);
-      };
+    // Initialize Speech Recognition once to check compatibility
+    if (!('webkitSpeechRecognition' in window || 'SpeechRecognition' in window)) {
+      console.warn('Speech recognition not supported');
     }
   };
 
@@ -72,24 +53,56 @@ const Pronouncle = () => {
     }
   };
 
-  const startRecording = () => {
-    if (hasPlayed || !recognitionRef.current) return;
+  const startRecording = (e) => {
+    if (e) e.preventDefault();
+    if (hasPlayed) return;
 
     setTranscription('');
 
-    try {
-      recognitionRef.current.start();
+    // Create new instance every time to avoid InvalidStateError and ensure fresh state
+    const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
+    if (!SpeechRecognition) {
+      alert("Speech recognition is not supported in this browser.");
+      return;
+    }
+
+    const recognition = new SpeechRecognition();
+    recognition.continuous = false;
+    recognition.interimResults = false;
+    recognitionRef.current = recognition;
+
+    recognition.onstart = () => {
       setIsRecording(true);
+    };
+
+    recognition.onresult = (event) => {
+      const result = event.results[0][0].transcript;
+      setTranscription(result);
+      const finalScore = calculateScore(word.term, result);
+      handleGameEnd(finalScore);
+    };
+
+    recognition.onerror = (event) => {
+      console.error('Speech recognition error', event.error);
+      setIsRecording(false);
+      if (event.error === 'not-allowed') {
+        alert("Please allow microphone access to play!");
+      }
+    };
+
+    recognition.onend = () => {
+      setIsRecording(false);
+    };
+
+    try {
+      recognition.start();
     } catch (err) {
       console.error("Error starting speech recognition", err);
-      // If it's already started, just ignore
-      if (err.name !== 'InvalidStateError') {
-        alert("Microphone access might be blocked. Please check your browser settings!");
-      }
     }
   };
 
-  const stopRecording = () => {
+  const stopRecording = (e) => {
+    if (e) e.preventDefault();
     if (recognitionRef.current) {
       try {
         recognitionRef.current.stop();
@@ -137,7 +150,17 @@ const Pronouncle = () => {
             onMouseUp={stopRecording}
             onTouchStart={startRecording}
             onTouchEnd={stopRecording}
-            style={{ width: '100px', height: '100px', borderRadius: '50%', padding: 0 }}
+            onContextMenu={(e) => e.preventDefault()}
+            style={{
+              width: '120px',
+              height: '120px',
+              borderRadius: '50%',
+              padding: 0,
+              touchAction: 'none',
+              userSelect: 'none',
+              WebkitUserSelect: 'none',
+              WebkitTouchCallout: 'none'
+            }}
           >
             <Mic size={40} />
           </button>
