@@ -40,8 +40,8 @@ body {
 
 #root {
   width: 100%;
-  max-width: 600px;
-  /* Expanded from 480px */
+  max-width: 800px;
+  /* Expanded from 600px */
   padding: 20px;
 }
 

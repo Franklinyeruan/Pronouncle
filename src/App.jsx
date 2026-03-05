@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useRef } from 'react';
-import { Mic, Download, Share2, RefreshCw, Trophy, AlertCircle } from 'lucide-react';
+import { Mic, Share2, RefreshCw, Trophy, AlertCircle } from 'lucide-react';
 import confetti from 'canvas-confetti';
 import { getDailyWord } from './data/lexicon';
 import { calculateScore, getPhoneticCode } from './utils/scoring';
@@ -178,11 +178,6 @@ const Pronouncle = () => {
             )}
 
             <div style={{ display: 'flex', gap: '12px', marginTop: '32px', justifyContent: 'center' }}>
-              {audioUrl && (
-                <a href={audioUrl} download={`${word.term}_pronunciation.wav`} className="btn" style={{ background: '#f3f4f6', color: '#6b7280' }}>
-                  <Download size={20} />
-                </a>
-              )}
               <button onClick={shareScore} className="btn btn-primary" style={{ flex: 1 }}>
                 <Share2 size={20} /> Share Score
               </button>
