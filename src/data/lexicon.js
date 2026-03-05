@@ -1,11 +1,5 @@
 export const MEDICAL_TERMS = [
   {
-    term: "Lymphangioleiomyomatosis",
-    phonetic: "lim-FAN-jee-oh-LY-oh-MY-oh-muh-TOH-sis",
-    definition: "A rare, progressive lung disease that primarily affects women of childbearing age.",
-    difficulty: "hard"
-  },
-  {
     term: "Sphygmomanometer",
     phonetic: "sfig-moh-muh-NOM-i-ter",
     definition: "An instrument for measuring blood pressure, typically consisting of an inflatable rubber cuff.",
@@ -18,17 +12,17 @@ export const MEDICAL_TERMS = [
     difficulty: "hard"
   },
   {
-    term: "Choledocholithiasis",
-    phonetic: "koh-led-uh-koh-li-THY-uh-sis",
-    definition: "The presence of at least one gallstone in the common bile duct.",
+    term: "Lymphangioleiomyomatosis",
+    phonetic: "lim-FAN-jee-oh-LY-oh-MY-oh-muh-TOH-sis",
+    definition: "A rare, progressive lung disease that primarily affects women of childbearing age.",
     difficulty: "hard"
   },
-  {
-    term: "Thyroparathyroidectomy",
-    phonetic: "thy-roh-par-uh-thy-roy-dek-tuh-mee",
-    definition: "Surgical removal of the thyroid and parathyroid glands.",
-    difficulty: "expert"
-  }
+  // {
+  //   term: "Thyroparathyroidectomy",
+  //   phonetic: "thy-roh-par-uh-thy-roy-dek-tuh-mee",
+  //   definition: "Surgical removal of the thyroid and parathyroid glands.",
+  //   difficulty: "expert"
+  // }
 ];
 
 export const getDailyWord = () => {
