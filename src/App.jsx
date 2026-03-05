@@ -13,8 +13,6 @@ const Pronouncle = () => {
   const [audioUrl, setAudioUrl] = useState(null);
 
   const recognitionRef = useRef(null);
-  const mediaRecorderRef = useRef(null);
-  const audioChunksRef = useRef([]);
 
   const initGame = () => {
     const dailyWord = getDailyWord();
@@ -74,40 +72,30 @@ const Pronouncle = () => {
     }
   };
 
-  const startRecording = async () => {
-    if (hasPlayed) return;
+  const startRecording = () => {
+    if (hasPlayed || !recognitionRef.current) return;
 
     setTranscription('');
-    audioChunksRef.current = [];
 
     try {
-      const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
-      mediaRecorderRef.current = new MediaRecorder(stream);
-
-      mediaRecorderRef.current.ondataavailable = (event) => {
-        audioChunksRef.current.push(event.data);
-      };
-
-      mediaRecorderRef.current.onstop = () => {
-        const audioBlob = new Blob(audioChunksRef.current, { type: 'audio/wav' });
-        setAudioUrl(URL.createObjectURL(audioBlob));
-      };
-
-      mediaRecorderRef.current.start();
       recognitionRef.current.start();
       setIsRecording(true);
     } catch (err) {
-      console.error("Error accessing microphone", err);
-      alert("Please allow microphone access to play!");
+      console.error("Error starting speech recognition", err);
+      // If it's already started, just ignore
+      if (err.name !== 'InvalidStateError') {
+        alert("Microphone access might be blocked. Please check your browser settings!");
+      }
     }
   };
 
   const stopRecording = () => {
-    if (mediaRecorderRef.current && mediaRecorderRef.current.state === 'recording') {
-      mediaRecorderRef.current.stop();
-    }
     if (recognitionRef.current) {
-      recognitionRef.current.stop();
+      try {
+        recognitionRef.current.stop();
+      } catch (err) {
+        console.error("Error stopping recognition", err);
+      }
     }
     setIsRecording(false);
   };
