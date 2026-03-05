@@ -138,7 +138,7 @@ const Pronouncle = () => {
 
       <div style={{ textAlign: 'center', marginBottom: '40px' }}>
         <p style={{ color: 'var(--text-muted)', fontSize: '0.8rem', fontWeight: '800', marginBottom: '8px' }}>TODAY'S TERM</p>
-        <h2 style={{ fontSize: '2.5rem', marginBottom: '4px', color: '#ff85a2', fontWeight: '900' }}>{word.term}</h2>
+        <h2 style={{ marginBottom: '4px', color: '#ff85a2', fontWeight: '900' }}>{word.term}</h2>
       </div>
 
       <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '24px' }}>
