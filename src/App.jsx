@@ -201,7 +201,7 @@ const Pronouncle = () => {
         )}
 
         <p style={{ fontSize: '0.8rem', color: 'var(--text-muted)', height: '1.2rem', fontWeight: '600' }}>
-          {isRecording ? "Listening... finish speaking and wait" : !hasPlayed ? "Tap button to start recording" : "Next word in 12 hours"}
+          {isRecording ? "Listening... finish speaking and wait (no need to press again)" : !hasPlayed ? "Tap button to start recording" : "Next word in 12 hours"}
         </p>
       </div>
 
