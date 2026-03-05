@@ -114,7 +114,7 @@ const Pronouncle = () => {
   const shareScore = () => {
     const text = `I scored ${score}/100 on Pronouncle today! Can you beat me? \nWord: ${word.term}\nPlay here: ${window.location.href}`;
     navigator.clipboard.writeText(text);
-    alert("Score copied to clipboard!");
+    alert("Score copied to clipboard! You can now paste it and send it anywhere.");
   };
 
   const handleTryAgain = () => {
